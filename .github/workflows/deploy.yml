@@ -33,7 +33,7 @@ jobs:
         </dict>" | sudo tee -a /var/lib/cloudflare-warp/mdm.xml
         
         echo "CONTENT:"
-        sudo cat /var/lib/cloudflare-warp/mdm.xml | echo
+        sudo cat /var/lib/cloudflare-warp/mdm.xml | echo -
 
         sudo apt update
         sudo apt install libnss3-tools desktop-file-utils
