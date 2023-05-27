@@ -44,8 +44,11 @@ jobs:
         ruby-version: '3.0' # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-    - name: test SSH
-      run: ssh chrisdmacrae@192.168.122.103 ls
+    - name: Setup SSH session
+      uses: lhotari/action-upterm@v1
+      with:
+        ## limits ssh access and adds the ssh public keys of the listed GitHub users
+        limit-access-to-users: ncphillips,chrisdmacrae
 
     - name: MRSK Deploy
       run: bundle exec mrsk deploy
