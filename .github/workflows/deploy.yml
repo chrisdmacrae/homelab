@@ -44,6 +44,10 @@ jobs:
         ruby-version: '3.0' # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
+    - uses: webfactory/ssh-agent@v0.7.0
+      with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
     - name: Setup SSH session
       uses: lhotari/action-upterm@v1
       with:
