@@ -58,4 +58,8 @@ jobs:
         MRSK_REGISTRY_PASSWORD: ${{ secrets.MRSK_REGISTRY_PASSWORD }}
         DOCKER_HOST: ssh://chrisdmacrae@macpro.pmfit.org
         MEDIA_ROOT: /media/d1
-      run: bundle exec ./bin/deploy
+      run: |
+        ssh-keygen -R macpro.pmfit.org
+        ssh-keygen -R dev.pmfit.org
+
+        bundle exec ./bin/deploy
