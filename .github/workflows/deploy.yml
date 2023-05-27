@@ -21,5 +21,10 @@ jobs:
         warp-cli --accept-tos register
         warp-cli --accept-tos connect
 
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0' # Not needed with a .ruby-version file
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
     - name: MRSK Deploy
-      run: docker run --rm -v $HOME/.ssh:/root/.ssh -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/:/workdir  ghcr.io/mrsked/mrsk deploy
+      run: bundle exec mrsk deploy
