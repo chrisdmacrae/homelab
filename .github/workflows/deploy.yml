@@ -50,6 +50,8 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
     - name: MRSK Deploy
+      env:
+        MRSK_REGISTRY_PASSWORD: ${{ secrets.MRSK_REGISTRY_PASSWORD }}
       run: |
         bundle exec mrsk lock release
         bundle exec mrsk deploy
