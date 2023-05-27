@@ -8,7 +8,7 @@ image: chrisdmacrae/homelab
 servers:
   web:
     hosts:
-      - 192.168.122.103
+      - dev.pmfit.org
       
 # Credentials for your image host.
 registry:

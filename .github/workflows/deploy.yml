@@ -14,46 +14,40 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup cloudflare warp
+    - name: Setup cloudflared CLI
       env:
         CLOUDFLARE_ACCESS_CLIENT_ID: ${{secrets.CLOUDFLARE_ACCESS_CLIENT_ID}}
         CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET}}
       run: |
-        sudo mkdir /var/lib/cloudflare-warp
-        sudo touch /var/lib/cloudflare-warp/mdm.xml
-
-        sudo echo "
-        <dict>
-          <key>organization</key>
-          <string>pmfit</string>
-          <key>auth_client_id</key>
-          <string>$CLOUDFLARE_ACCESS_CLIENT_ID</string>
-          <key>auth_client_secret</key>
-          <string>$CLOUDFLARE_ACCESS_CLIENT_SECRET</string>
-        </dict>" | sudo tee -a /var/lib/cloudflare-warp/mdm.xml
+        # Add cloudflare gpg key
+        sudo mkdir -p --mode=0755 /usr/share/keyrings
+        curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
         
-        echo "CONTENT:"
-        sudo cat /var/lib/cloudflare-warp/mdm.xml | echo -
+        # Add this repo to your apt repositories
+        echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared focal main' | sudo tee /etc/apt/sources.list.d/cloudflared.list
+        
+        # install cloudflared
+        sudo apt-get update && sudo apt-get install cloudflared
 
-        sudo apt update
-        sudo apt install libnss3-tools desktop-file-utils
-        wget https://pkg.cloudflareclient.com/uploads/cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
-        sudo dpkg -i cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
+    - name: Setup SSH Proxy
+      run: |
+        mkdir ~/.ssh
+        touch ~/.ssh/config
+        echo "
+        Host dev.pmfit.org
+        ProxyCommand cloudflared access ssh --hostname %h
+        " | tee -a ~/.ssh/config
 
-        warp-cli --accept-tos connect
-        warp-cli --accept-tos get-organization
-        warp-cli --accept-tos status
-        warp-cli --accept-tos account
-        curl https://www.cloudflare.com/cdn-cgi/trace/
+    - name: Setup SSH Keys
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - uses: ruby/setup-ruby@v1
+    - name: Install MRSK & Ruby Deps
+      uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.0' # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-
-    - uses: webfactory/ssh-agent@v0.7.0
-      with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: MRSK Deploy
       run: bundle exec mrsk deploy
