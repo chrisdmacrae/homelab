@@ -1,0 +1,25 @@
+name: 'Production Web Deploy'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  mrsk-deploy:
+    runs-on: ubuntu-22.04
+    
+    environment: production
+
+    container:
+      image: ghcr.io/mrsked/mrsk
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: Boostport/setup-cloudflare-warp@v1
+      with:
+        organization: pmfit
+        auth_client_id: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_ID }}
+        auth_client_secret: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
+
+    - runs: mrsk deploy
