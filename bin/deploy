@@ -1,10 +1,14 @@
 #!/usr/bin/env ruby
 require 'dotenv/load'
 
-unless ENV.fetch("DOCKER_HOST", nil).nil?
-  system("DOCKER_HOST=#{ENV.fetch("DOCKER_HOST")} docker-compose up -d")
-else
-  system("docker-compose up -d")
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
 end
 
-system("bundle exec mrsk deploy")
+unless ENV.fetch("DOCKER_HOST", nil).nil?
+  system!("DOCKER_HOST=#{ENV.fetch("DOCKER_HOST")} docker-compose up -d")
+else
+  system!("docker-compose up -d")
+end
+
+system!("bundle exec mrsk deploy")
