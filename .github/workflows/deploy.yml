@@ -29,8 +29,9 @@ jobs:
           <string>$CLOUDFLARE_ACCESS_CLIENT_ID</string>
           <key>auth_client_secret</key>
           <string>$CLOUDFLARE_ACCESS_CLIENT_SECRET</string>
-        </dict>" | sudo tee /var/lib/cloudflare-warp/mdm.xml
+        </dict>" | sudo tee -a /var/lib/cloudflare-warp/mdm.xml
         
+        echo "CONTENT:"
         sudo cat /var/lib/cloudflare-warp/mdm.xml | echo $1
 
         sudo apt update
