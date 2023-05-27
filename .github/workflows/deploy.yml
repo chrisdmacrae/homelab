@@ -44,5 +44,8 @@ jobs:
         ruby-version: '3.0' # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
+    - name: test SSH
+      run: ssh chrisdmacrae@192.168.122.103
+
     - name: MRSK Deploy
       run: bundle exec mrsk deploy
