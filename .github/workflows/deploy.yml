@@ -31,6 +31,8 @@ jobs:
           <string>$CLOUDFLARE_ACCESS_CLIENT_SECRET</string>
         </dict>" | sudo tee /var/lib/cloudflare-warp/mdm.xml
         
+        sudo cat /var/lib/cloudflare-warp/mdm.xml | echo $1
+
         sudo apt update
         sudo apt install libnss3-tools desktop-file-utils
         wget https://pkg.cloudflareclient.com/uploads/cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
