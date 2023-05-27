@@ -18,8 +18,8 @@ jobs:
         sudo apt install libnss3-tools desktop-file-utils
         wget https://pkg.cloudflareclient.com/uploads/cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
         sudo dpkg -i cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
-        warp-cli register --accept-tos
-        warp-cli connect
+        warp-cli --accept-tos register
+        warp-cli --accept-tos connect
 
     - name: MRSK Deploy
       run: alias mrsk='docker run --rm -it -v $HOME/.ssh:/root/.ssh -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/:/workdir  ghcr.io/mrsked/mrsk' deploy
