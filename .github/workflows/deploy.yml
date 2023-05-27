@@ -50,4 +50,6 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
     - name: MRSK Deploy
-      run: bundle exec mrsk deploy
+      run: |
+        bundle exec lock release
+        bundle exec mrsk deploy
