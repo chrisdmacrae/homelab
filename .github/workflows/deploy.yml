@@ -37,6 +37,9 @@ jobs:
         Host dev.pmfit.org
         ProxyCommand cloudflared access ssh --hostname %h
         " | tee -a ~/.ssh/config
+        Host dev.pmfit.org
+        ProxyCommand cloudflared access ssh --hostname %h
+        " | tee -a ~/.ssh/config
 
     - name: Setup SSH Keys
       uses: webfactory/ssh-agent@v0.7.0
@@ -52,4 +55,6 @@ jobs:
     - name: MRSK Deploy
       env:
         MRSK_REGISTRY_PASSWORD: ${{ secrets.MRSK_REGISTRY_PASSWORD }}
-      run: bundle exec mrsk deploy
+        DOCKER_HOST: macpro.pmfit.org
+        MEDIA_ROOT: /media/d1
+      run: ./bin/deploy
