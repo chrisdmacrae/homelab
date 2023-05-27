@@ -37,7 +37,8 @@ jobs:
         Host dev.pmfit.org
         ProxyCommand cloudflared access ssh --hostname %h
         " | tee -a ~/.ssh/config
-        Host dev.pmfit.org
+        echo "
+        Host macpro.pmfit.org
         ProxyCommand cloudflared access ssh --hostname %h
         " | tee -a ~/.ssh/config
 
