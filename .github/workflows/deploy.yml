@@ -15,6 +15,15 @@ jobs:
     - uses: actions/checkout@v3
     - name: Setup warp
       run: |
+        sudo mkdir /var/lib/cloudflare-warp/
+        sudo echo "<dict>
+          <key>organization</key>
+          <string>pmfit</string>
+          <key>auth_client_id</key>
+          <string>${secrets.CLOUDFLARE_ACCESS_CLIENT_ID}</string>
+          <key>auth_client_secret</key>
+          <string>${secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET}</string>
+        </dict>" < /var/lib/cloudflare-warp/mdm.xml
         sudo apt install libnss3-tools desktop-file-utils
         wget https://pkg.cloudflareclient.com/uploads/cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
         sudo dpkg -i cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
