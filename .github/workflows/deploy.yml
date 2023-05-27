@@ -59,7 +59,6 @@ jobs:
         DOCKER_HOST: ssh://chrisdmacrae@macpro.pmfit.org
         MEDIA_ROOT: /media/d1
       run: |
-        ssh-keygen -R macpro.pmfit.org
-        ssh-keygen -R dev.pmfit.org
+        ssh -o StrictHostKeyChecking=no chrisdmacrae@macpro.pmfit.org uptime
 
         bundle exec ./bin/deploy
