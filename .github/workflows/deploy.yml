@@ -21,7 +21,7 @@ jobs:
         sudo mkdir /var/lib/cloudflare-warp/
         sudo touch /var/lib/cloudflare-warp/mdm.xml
 
-        echo "
+        sudo echo "
         <dict>
           <key>organization</key>
           <string>pmfit</string>
