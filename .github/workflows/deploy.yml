@@ -13,11 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: Boostport/setup-cloudflare-warp@v1
-      with:
-        organization: pmfit
-        auth_client_id: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_ID }}
-        auth_client_secret: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
+    - name: Setup warp
+      run: |
+        sudo apt install cloudflare-warp
+        warp-cli register
+        warp-cli connect
 
     - name: MRSK Deploy
       run: alias mrsk='docker run --rm -it -v $HOME/.ssh:/root/.ssh -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/:/workdir  ghcr.io/mrsked/mrsk' deploy
