@@ -29,7 +29,7 @@ jobs:
           <string>$CLOUDFLARE_ACCESS_CLIENT_SECRET</string>
           <key>auth_client_secret</key>
           <string>$CLOUDFLARE_ACCESS_CLIENT_SECRET</string>
-        </dict>" >> /var/lib/cloudflare-warp/mdm.xml
+        </dict>" | sudo tee /var/lib/cloudflare-warp/mdm.xml
         
         sudo apt update
         sudo apt install libnss3-tools desktop-file-utils
