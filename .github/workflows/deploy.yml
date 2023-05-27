@@ -22,4 +22,4 @@ jobs:
         auth_client_id: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_ID }}
         auth_client_secret: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
 
-    - runs: mrsk deploy
+    - run: mrsk deploy
