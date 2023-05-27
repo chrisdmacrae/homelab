@@ -26,7 +26,7 @@ jobs:
           <key>organization</key>
           <string>pmfit</string>
           <key>auth_client_id</key>
-          <string>$CLOUDFLARE_ACCESS_CLIENT_SECRET</string>
+          <string>$CLOUDFLARE_ACCESS_CLIENT_ID</string>
           <key>auth_client_secret</key>
           <string>$CLOUDFLARE_ACCESS_CLIENT_SECRET</string>
         </dict>" | sudo tee /var/lib/cloudflare-warp/mdm.xml
