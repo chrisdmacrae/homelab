@@ -15,7 +15,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Setup warp
       run: |
-        sudo apt install cloudflare-warp
+        wget https://pkg.cloudflareclient.com/uploads/cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
+        sudo dpkg -i cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
         warp-cli register
         warp-cli connect
 
