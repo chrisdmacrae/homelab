@@ -14,19 +14,28 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Setup warp
+      env:
+        CLOUDFLARE_ACCESS_CLIENT_ID: ${{secrets.CLOUDFLARE_ACCESS_CLIENT_ID}}
+        CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET}}
       run: |
         sudo mkdir /var/lib/cloudflare-warp/
-        sudo echo "<dict>
+        sudo touch /var/lib/cloudflare-warp/mdm.xml
+
+        echo "
+        <dict>
           <key>organization</key>
           <string>pmfit</string>
           <key>auth_client_id</key>
-          <string>${secrets.CLOUDFLARE_ACCESS_CLIENT_ID}</string>
+          <string>$CLOUDFLARE_ACCESS_CLIENT_SECRET</string>
           <key>auth_client_secret</key>
-          <string>${secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET}</string>
+          <string>$CLOUDFLARE_ACCESS_CLIENT_SECRET</string>
         </dict>" < /var/lib/cloudflare-warp/mdm.xml
+        
+        sudo apt update
         sudo apt install libnss3-tools desktop-file-utils
         wget https://pkg.cloudflareclient.com/uploads/cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
         sudo dpkg -i cloudflare_warp_2023_3_398_1_amd64_ddd2a223f7.deb
+
         warp-cli --accept-tos register
         warp-cli --accept-tos connect
 
