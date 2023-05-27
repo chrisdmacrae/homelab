@@ -22,4 +22,4 @@ jobs:
         warp-cli --accept-tos connect
 
     - name: MRSK Deploy
-      run: docker run --rm -it -v $HOME/.ssh:/root/.ssh -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/:/workdir  ghcr.io/mrsked/mrsk deploy
+      run: docker run --rm -v $HOME/.ssh:/root/.ssh -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/:/workdir  ghcr.io/mrsked/mrsk deploy
