@@ -18,7 +18,7 @@ jobs:
         CLOUDFLARE_ACCESS_CLIENT_ID: ${{secrets.CLOUDFLARE_ACCESS_CLIENT_ID}}
         CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET}}
       run: |
-        sudo mkdir /var/lib/cloudflare-warp/
+        sudo mkdir /var/lib/cloudflare-warp
         sudo touch /var/lib/cloudflare-warp/mdm.xml
 
         sudo echo "
