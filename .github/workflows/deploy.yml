@@ -56,6 +56,6 @@ jobs:
     - name: Deploy
       env:
         MRSK_REGISTRY_PASSWORD: ${{ secrets.MRSK_REGISTRY_PASSWORD }}
-        DOCKER_HOST: macpro.pmfit.org
+        DOCKER_HOST: ssh://chrisdmacrae@macpro.pmfit.org
         MEDIA_ROOT: /media/d1
       run: bundle exec ./bin/deploy
