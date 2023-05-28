@@ -62,3 +62,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no chrisdmacrae@macpro.pmfit.org uptime
 
         bundle exec ./bin/deploy
+
+    - uses: satackey/action-docker-layer-caching@v0.0.11
+      # Ignore the failure of a step and avoid terminating the job.
+      continue-on-error: true
