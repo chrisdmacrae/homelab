@@ -15,6 +15,7 @@ services:
     volumes:
       - ${MEDIA_ROOT}/plex/config:/config
       - ${MEDIA_ROOT}/tv:/tv
+      - ${MEDIA_ROOT}/anime:/anime
       - ${MEDIA_ROOT}/movies:/movies
     restart: unless-stopped
 
@@ -33,6 +34,22 @@ services:
       - 7878:7878
     restart: unless-stopped
 
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ${MEDIA_ROOT}/sonarr:/config
+      - ${MEDIA_ROOT}/tv:/tv
+      - ${MEDIA_ROOT}/anime:/anime
+      - ${MEDIA_ROOT}/downloads:/data
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
   jackett:
     image: lscr.io/linuxserver/jackett:latest
     container_name: jackett
@@ -43,8 +60,7 @@ services:
       - AUTO_UPDATE=true #optional
       - RUN_OPTS= #optional
     volumes:
-      - /path/to/data:/config
-      - /path/to/blackhole:/downloads
+      - ${MEDIA_ROOT}/jackett:/config
     ports:
       - 9117:9117
     restart: unless-stopped

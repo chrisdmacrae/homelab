@@ -1,4 +1,4 @@
-name: 'Production Web Deploy'
+name: 'Deploy MRSK and Docker Compose'
 
 on:
   push:
