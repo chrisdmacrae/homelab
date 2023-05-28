@@ -1,0 +1,25 @@
+name: 'Production Web Deploy'
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    
+    environment: production
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install MRSK & Ruby Deps
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0' # Not needed with a .ruby-version file
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+    - name: Deploy
+      env:
+        MRSK_REGISTRY_PASSWORD: ${{ secrets.MRSK_REGISTRY_PASSWORD }}
+        DOCKER_HOST: ssh://chrisdmacrae@macpro.pmfit.org
+        MEDIA_ROOT: /media/d1
+      run: bundle exec mrsk lock release

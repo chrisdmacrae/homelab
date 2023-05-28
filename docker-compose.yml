@@ -28,26 +28,9 @@ services:
     volumes:
       - ${MEDIA_ROOT}/radarr:/config
       - ${MEDIA_ROOT}/movies:/movies
-      - ${MEDIA_ROOT}/downloads:/downloads
+      - ${MEDIA_ROOT}/downloads:/data
     ports:
       - 7878:7878
-    restart: unless-stopped
-
-  transmission:
-    image: lscr.io/linuxserver/transmission:latest
-    container_name: transmission
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - ${MEDIA_ROOT}/transmission:/config
-      - ${MEDIA_ROOT}/downloads:/downloads
-      - ${MEDIA_ROOT}/watch:/watch
-    ports:
-      - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
     restart: unless-stopped
 
   jackett:
@@ -65,3 +48,24 @@ services:
     ports:
       - 9117:9117
     restart: unless-stopped
+
+  transmission-openvpn:
+    container_name: transmission
+    cap_add:
+        - NET_ADMIN
+    volumes:
+      - ${MEDIA_ROOT}/transmission:/config
+      - ${MEDIA_ROOT}/downloads:/data
+    environment:
+        - OPENVPN_PROVIDER=NORDVPN
+        - OPENVPN_CONFIG=ca1555.nordvpn.com
+        - OPENVPN_USERNAME=bJrDWYfryEfaGioF1uvUAt2P
+        - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+        - LOCAL_NETWORK=192.168.0.0/16
+    logging:
+        driver: json-file
+        options:
+            max-size: 10m
+    ports:
+        - '9091:9091'
+    image: haugene/transmission-openvpn
