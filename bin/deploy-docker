@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require 'dotenv/load'
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+unless ENV.fetch("DOCKER_HOST", nil).nil?
+  system!("scp templates/* #{ENV.fetch("DOCKER_HOST").gsub('ssh://', '')}:#{ENV.fetch("APP_ROOT")}/templates")
+  system!("DOCKER_HOST=#{ENV.fetch("DOCKER_HOST")} docker-compose up -d")
+  system!("DOCKER_HOST=#{ENV.fetch("DOCKER_HOST")} docker-compose restart")
+else
+  system!("docker-compose up -d")
+end
