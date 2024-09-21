@@ -6,7 +6,6 @@ def system!(*args)
 end
 
 unless ENV.fetch("DOCKER_HOST", nil).nil?
-  system!("scp templates/* #{ENV.fetch("DOCKER_HOST").gsub('ssh://', '')}:#{ENV.fetch("APP_ROOT")}/templates")
   system!("DOCKER_HOST=#{ENV.fetch("DOCKER_HOST")} docker-compose up -d")
   system!("DOCKER_HOST=#{ENV.fetch("DOCKER_HOST")} docker-compose restart")
 else

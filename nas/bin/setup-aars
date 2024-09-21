@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+require 'dotenv/load'
+require 'open3'
+
+def system!(*args)
+    out, err, st = Open3.capture3(*args)
+
+    if st.success?
+        puts out
+    else
+        puts out
+        puts err
+        exit st.exitstatus
+    end
+end
+
+unless ENV.fetch("DOCKER_IP", nil).nil?
+  # Setup music share
+  system!("../bin/setup-remote-smb-mount.sh #{ENV.fetch("NAS_SHARE_HOST")} nas/media/movies /home/chrisdmacrae/movies #{ENV.fetch("NAS_SHARE_USER")} #{ENV.fetch("NAS_SHARE_PASSWORD")}")
+  system!("../bin/setup-remote-smb-mount.sh #{ENV.fetch("NAS_SHARE_HOST")} nas/media/tv /home/chrisdmacrae/tv #{ENV.fetch("NAS_SHARE_USER")} #{ENV.fetch("NAS_SHARE_PASSWORD")}")
+  system!("../bin/setup-remote-smb-mount.sh #{ENV.fetch("NAS_SHARE_HOST")} nas/media/photos /home/chrisdmacrae/photos #{ENV.fetch("NAS_SHARE_USER")} #{ENV.fetch("NAS_SHARE_PASSWORD")}")
+  system!("../bin/setup-remote-smb-mount.sh #{ENV.fetch("NAS_SHARE_HOST")} nas/media/anime /home/chrisdmacrae/anime #{ENV.fetch("NAS_SHARE_USER")} #{ENV.fetch("NAS_SHARE_PASSWORD")}")
+  system!("../bin/setup-remote-smb-mount.sh #{ENV.fetch("NAS_SHARE_HOST")} nas/media/music /home/chrisdmacrae/music #{ENV.fetch("NAS_SHARE_USER")} #{ENV.fetch("NAS_SHARE_PASSWORD")}")
+  system!("../bin/setup-remote-smb-mount.sh #{ENV.fetch("NAS_SHARE_HOST")} nas/downloads /home/chrisdmacrae/downloads #{ENV.fetch("NAS_SHARE_USER")} #{ENV.fetch("NAS_SHARE_PASSWORD")}")
+else
+    print "No DOCKER_IP found in .env file. Exiting..."
+end

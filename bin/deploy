@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-require 'dotenv/load'
-
-def system!(*args)
-  system(*args) || abort("\n== Command #{args} failed ==")
-end
-
-system!("bin/deploy-docker")
-system!("bin/deploy-mrsk")
