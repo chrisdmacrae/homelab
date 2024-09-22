@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require 'dotenv/load'
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+unless ENV.fetch("ROON_HOST", nil).nil?
+  system!("ssh #{ENV.fetch("ROON_HOST")} sudo wget -O - https://download.roonlabs.com/builds/roonserver-installer-linuxx64.sh > install.sh")
+  system!("ssh #{ENV.fetch("ROON_HOST")} chmod +x install.sh")
+  system!("ssh #{ENV.fetch("ROON_HOST")} ./install.sh")
+else
+  echo "ROON_HOST not set"
+end

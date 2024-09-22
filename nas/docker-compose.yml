@@ -1,6 +1,15 @@
 ---
 version: "2.1"
 services:
+  homepage:
+    image: ghcr.io/benphelps/homepage:latest
+    container_name: homepage
+    ports:
+      - 3000:3000
+    volumes:
+      - ${APP_ROOT}/homepage:/app/config # Make sure your local config directory exists
+      - /var/run/docker.sock:/var/run/docker.sock:ro # (optional) For docker integrations
+
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
@@ -32,23 +41,6 @@ services:
       - ${DOWNLOADS_ROOT}/downloads:/data
     ports:
       - 8989:8989
-    networks:
-      - internal
-    restart: unless-stopped
-
-  jackett:
-    image: lscr.io/linuxserver/jackett:latest
-    container_name: jackett
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - AUTO_UPDATE=true #optional
-      - RUN_OPTS= #optional
-    volumes:
-      - ${APP_ROOT}/jackett:/config
-    ports:
-      - 9117:9117
     networks:
       - internal
     restart: unless-stopped
@@ -109,6 +101,17 @@ services:
       - 5055:5055
     restart: unless-stopped
 
+  overseerr-lidarr:
+    build:
+      context: https://github.com/ano0002/overseerr.git#overseer-with-lidarr-support
+      args:
+        COMMIT_TAG: 6c07d227566ae2ba24badf97e7aa69852ac95abc
+    volumes:
+      - ${APP_ROOT}/overseerr-lidarr:/config
+    ports:
+      - 5056:5055
+    restart: unless-stopped
+
   transmission-openvpn:
     image: haugene/transmission-openvpn
     container_name: transmission
@@ -116,7 +119,7 @@ services:
       - NET_ADMIN
     volumes:
       - ${APP_ROOT}/transmission:/config
-      - ${DOWNLOADS_ROOT}/downloads:/data
+      - ${DOWNLOADS_ROOT}/transmission:/data
     environment:
       - OPENVPN_PROVIDER=NORDVPN
       - OPENVPN_CONFIG=ca1555.nordvpn.com
