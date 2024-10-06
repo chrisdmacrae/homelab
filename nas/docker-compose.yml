@@ -69,7 +69,7 @@ services:
       - TZ=Europe/London
     volumes:
       - ${APP_ROOT}/readarr:/config
-      - ${MEDIA_ROOT}/books:/books
+      - ${MEDIA_ROOT}/ebooks:/ebooks
       - ${DOWNLOADS_ROOT}/downloads:/downloads
     ports:
       - 8787:8787
@@ -106,8 +106,9 @@ services:
       context: https://github.com/ano0002/overseerr.git#overseer-with-lidarr-support
       args:
         COMMIT_TAG: 6c07d227566ae2ba24badf97e7aa69852ac95abc
+    container_name: overseer-lidarr
     volumes:
-      - ${APP_ROOT}/overseerr-lidarr:/config
+      - ${APP_ROOT}/overseerr-lidarr:/app/config
     ports:
       - 5056:5055
     restart: unless-stopped
